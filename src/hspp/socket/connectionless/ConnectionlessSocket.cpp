@@ -23,11 +23,11 @@ bool ConnectionlessSocket::sendTo(const void* data, size_t length, const SocketA
 	}
 }
 
-bool ConnectionlessSocket::receiveFrom(void* data, size_t* length, SocketAddress& address, bool sync) const
+bool ConnectionlessSocket::receiveFrom(void* data, size_t* length, SocketAddress* address, bool sync) const
 {
-	socklen_t addressLength;
+	socklen_t addressLength = sizeof(address->c_addr());
 	
-	ssize_t received = ::recvfrom(this->c_fd(), data, *length, sync ? 0 : MSG_DONTWAIT, (struct sockaddr*) &(address.c_addr()), &addressLength);
+	ssize_t received = ::recvfrom(this->c_fd(), data, *length, sync ? 0 : MSG_DONTWAIT, (struct sockaddr*) &(address->c_addr()), &addressLength);
 	
 	if(received >= 0)
 	{

@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 			SocketAddress address;
 			size_t bufferLen = 256;
 			char buffer[bufferLen];
-			server.receiveFrom(buffer, &bufferLen, address);
+			server.receiveFrom(buffer, &bufferLen, &address);
 			std::cout << address.getAddress() << " says : " << buffer << std::endl;
 		}
 	}
