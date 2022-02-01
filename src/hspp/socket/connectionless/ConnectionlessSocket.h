@@ -8,12 +8,12 @@ namespace hspp
 {
 	class ConnectionlessSocket
 	{
-		virtual Descriptor c_fd() const = 0;
-		virtual const SocketProtocol getProtocol() const;
-		
-		virtual bool sendTo(void* data, size_t length, const SocketAddress& address, bool sync = true) const;
-		
-		virtual bool receiveFrom(void* data, size_t* length, SocketAddress* address, bool sync = true) const;
+		public:
+			virtual Descriptor c_fd() const = 0;
+			virtual const SocketProtocol getProtocol() const;
+			
+			virtual bool sendTo(const void* data, size_t length, const SocketAddress& address, bool sync = true) const;
+			virtual bool receiveFrom(void* data, size_t* length, SocketAddress& address, bool sync = true) const;
 	};
 }
 

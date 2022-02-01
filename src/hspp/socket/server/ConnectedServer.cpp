@@ -5,15 +5,11 @@ using namespace hspp;
 ConnectedServer::ConnectedServer(Port port) : Server(port) {}
 ConnectedServer::ConnectedServer(Descriptor descriptor, const SocketAddress& address) : Server(descriptor, address) {}
 
-bool ConnectedServer::listen(int maxQueueLength)
+void ConnectedServer::listen(int maxQueueLength)
 {
 	int result = ::listen(this->c_fd(), maxQueueLength);
 	
-	if(result != -1)
-	{
-		return result != -1;
-	}
-	else
+	if(result == -1)
 	{
 		throw SocketFailure("Cannot listen on socket");
 	}	

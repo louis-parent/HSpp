@@ -7,7 +7,17 @@ const SocketProtocol ConnectedSocket::getProtocol() const
 	return SocketProtocol::TCP;
 }
 
-bool ConnectedSocket::send(void* data, size_t length, bool sync) const
+void ConnectedSocket::shutdown()
+{
+	int result = ::shutdown(this->c_fd(), SHUT_RDWR);
+	
+	if(result == -1)
+	{
+		throw SocketFailure("Cannot shutdown socket");
+	}
+}
+
+bool ConnectedSocket::send(const void* data, size_t length, bool sync) const
 {
 	ssize_t sended = ::send(this->c_fd(), data, length, sync ? 0 : MSG_DONTWAIT);
 	

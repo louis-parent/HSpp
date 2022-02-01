@@ -9,7 +9,7 @@ namespace hspp
 	class Client : public Socket
 	{
 		public:
-			bool connect();
+			void connect();
 
 		protected:
 			Client(const std::string& address, Port port);	

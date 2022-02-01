@@ -12,7 +12,9 @@ namespace hspp
 			virtual Descriptor c_fd() const = 0;
 			virtual const SocketProtocol getProtocol() const;
 		
-			virtual bool send(void* data, size_t length, bool sync = true) const;
+			void shutdown();
+		
+			virtual bool send(const void* data, size_t length, bool sync = true) const;
 			virtual bool receive(void* data, size_t* length, bool sync = true) const;
 	};
 }

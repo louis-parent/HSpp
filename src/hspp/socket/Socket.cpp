@@ -7,7 +7,7 @@ using namespace hspp;
 void Socket::open()
 {
 	this->descriptor = socket(AF_INET, this->getProtocol().getType(), 0);
-	
+
 	if(this->descriptor == -1)
 	{
 		throw SocketFailure("Cannot open socket");
@@ -27,20 +27,11 @@ void Socket::bind()
 
 void Socket::close()
 {
-	int result = ::shutdown(this->descriptor, SHUT_RDWR);
-	
-	if(result != -1)
-	{			
-		result = ::close(this->descriptor);
+	int result = ::close(this->descriptor);
 		
-		if(result == -1)
-		{
-			throw SocketFailure("Cannot close socket");
-		}
-	}
-	else
+	if(result == -1)
 	{
-		throw SocketFailure("Cannot shutdown socket");
+		throw SocketFailure("Cannot close socket");
 	}
 }
 

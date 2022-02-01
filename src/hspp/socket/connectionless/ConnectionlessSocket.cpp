@@ -7,7 +7,7 @@ const SocketProtocol ConnectionlessSocket::getProtocol() const
 	return SocketProtocol::UDP;	
 }
 
-bool ConnectionlessSocket::sendTo(void* data, size_t length, const SocketAddress& address, bool sync) const
+bool ConnectionlessSocket::sendTo(const void* data, size_t length, const SocketAddress& address, bool sync) const
 {
 	struct sockaddr_in addr = address.c_addr();
 	
@@ -23,18 +23,15 @@ bool ConnectionlessSocket::sendTo(void* data, size_t length, const SocketAddress
 	}
 }
 
-bool ConnectionlessSocket::receiveFrom(void* data, size_t* length, SocketAddress* address, bool sync) const
+bool ConnectionlessSocket::receiveFrom(void* data, size_t* length, SocketAddress& address, bool sync) const
 {
-	struct sockaddr_in socketAddress;
 	socklen_t addressLength;
 	
-	ssize_t received = ::recvfrom(this->c_fd(), data, *length, sync ? 0 : MSG_DONTWAIT, (struct sockaddr*) &socketAddress, &addressLength);
+	ssize_t received = ::recvfrom(this->c_fd(), data, *length, sync ? 0 : MSG_DONTWAIT, (struct sockaddr*) &(address.c_addr()), &addressLength);
 	
 	if(received >= 0)
 	{
-		*length = received;
-		address = new SocketAddress(socketAddress);
-		
+		*length = received;		
 		return received > 0 && (size_t) received <= *length;
 	}
 	else

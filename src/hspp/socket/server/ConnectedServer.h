@@ -13,7 +13,7 @@ namespace hspp
 			ConnectedServer(Port port);
 			ConnectedServer(Descriptor descriptor, const SocketAddress& address);
 
-			bool listen(int maxQueueLength);
+			void listen(int maxQueueLength);
 			ConnectedClient acceptClient();
 		
 			Descriptor c_fd() const override;
