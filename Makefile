@@ -1,5 +1,5 @@
 CFLAG = -Wall -ansi -std=c++11
-CLIB =
+CLIB = -lpthread
 
 CC = g++
 CXX = g++
@@ -26,6 +26,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	$(CXX) $(CPPFLAGS) $(CFLAG) $(CXXFLAGS) -c $< -o $@ $(CLIB)
 
 clean:
+	$(RM) $(TARGET_EXEC)
 	$(RM) -r $(BUILD_DIR)
 	
 MKDIR_P ?= mkdir -p
