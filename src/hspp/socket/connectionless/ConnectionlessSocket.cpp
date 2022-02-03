@@ -17,6 +17,10 @@ bool ConnectionlessSocket::sendTo(const void* data, size_t length, const SocketA
 	{
 		return (size_t) sended == length;
 	}
+	else if(!sync && (errno == EWOULDBLOCK || errno == EAGAIN))
+	{
+		return false;
+	}
 	else
 	{
 		throw SocketFailure("Cannot send data through connectionless socket");
@@ -33,6 +37,11 @@ bool ConnectionlessSocket::receiveFrom(void* data, size_t* length, SocketAddress
 	{
 		*length = received;		
 		return received > 0 && (size_t) received <= *length;
+	}
+	else if(!sync && (errno == EWOULDBLOCK || errno == EAGAIN))
+	{
+		*length = 0;
+		return false;
 	}
 	else
 	{
