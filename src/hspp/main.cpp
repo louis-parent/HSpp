@@ -41,6 +41,8 @@ int main(int argc, char* argv[])
 		std::cin >> stop;
 		serv.stop();
 		
+		t.join();
+		
 		return 0;
 	}
 	else if(std::string("client") == argv[1])
@@ -58,9 +60,10 @@ int main(int argc, char* argv[])
 		
 		client.send(message.c_str(), message.size());
 		
-		size_t size = 5;
-		char buff[size];
+		char buff[5];
+		size_t size = 4;
 		client.receive(buff, &size);
+		buff[4] = '\0';
 		std::cout << buff << std::endl;
 		
 		client.close();

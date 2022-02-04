@@ -1,5 +1,4 @@
 #include "Request.h"
-#include <iostream>
 
 using namespace hspp;
 
@@ -20,14 +19,18 @@ const std::string& Request::getContent() const
 
 void Request::readAllFromSource()
 {
-	char c;
-	size_t readed;
-	bool keepReceiving;
+	char c = '\0';
+	size_t readed = 0;
+	bool keepReceiving = true;
 	
-	do
+	while(keepReceiving)
 	{
 		readed = sizeof(c);
 		keepReceiving = this->source.receive(&c, &readed, false);
-		this->content += c;
-	} while(keepReceiving);
+		
+		if(keepReceiving)
+		{
+			this->content += c;
+		}
+	}
 }
