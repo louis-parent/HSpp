@@ -1,32 +1,44 @@
-CFLAG = -Wall -ansi -std=c++11
-CLIB = -lpthread
+COMPILER_OPTIONS=-Wall -ansi -pedantic -std=c++11
+LINKER_OPTIONS=-lpthread
 
-CC = g++
-CXX = g++
-TARGET_EXEC ?= hspp
+COMPILER=g++
+TARGET=hspp
 
-BUILD_DIR ?= ./bin
-SRC_DIRS ?= ./src
+OBJECT_EXTENSION=.o
+SOURCE_EXTENSION=.cpp
+HEADER_EXTENSION=.h
 
-SRCS := $(shell find $(SRC_DIRS) -name *.cpp)
-OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
-DEPS := $(OBJS:.o=.d)
+SRC_DIRECTORY=src
+BIN_DIRECTORY=bin
 
-INC_DIRS := $(shell find $(SRC_DIRS) -type d)
-INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+SOURCE_FILES=$(shell find "${SRC_DIRECTORY}" -type f -follow -name "*${SOURCE_EXTENSION}")
+HEADER_FILES=$(shell find "${SRC_DIRECTORY}" -type f -follow -name "*${HEADER_EXTENSION}")
+OBJECT_FILES=$(subst $(SRC_DIRECTORY),$(BIN_DIRECTORY),$(subst $(SOURCE_EXTENSION),$(OBJECT_EXTENSION),$(SOURCE_FILES)))
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP
+all: $(TARGET)
+	@echo "Make done !"
 
-$(TARGET_EXEC): $(OBJS)
-	$(CC) $(OBJS) $(CFLAG) -o $@ $(LDFLAGS) $(CLIB)
+$(TARGET): $(OBJECT_FILES)
+	@echo "Linking object files into executable $@..."
+	@$(COMPILER) -o $@ $^ $(LINKER_OPTIONS)
 
-# c++ source
-$(BUILD_DIR)/%.cpp.o: %.cpp
-	$(MKDIR_P) $(dir $@)
-	$(CXX) $(CPPFLAGS) $(CFLAG) $(CXXFLAGS) -c $< -o $@ $(CLIB)
+$(BIN_DIRECTORY)/%$(OBJECT_EXTENSION): $(SRC_DIRECTORY)/%$(SOURCE_EXTENSION) $(SRC_DIRECTORY)/%$(HEADER_EXTENSION)
+	@echo "Compiling source $< ..."
+	@mkdir -p $(dir $@)
+	@$(COMPILER) -o $@ -c $< $(COMPILER_FLAGS)
+	
+$(BIN_DIRECTORY)/%$(OBJECT_EXTENSION): $(SRC_DIRECTORY)/%$(SOURCE_EXTENSION)
+	@echo "Compiling source $< ..."
+	@mkdir -p $(dir $@)
+	@$(COMPILER) -o $@ -c $< $(COMPILER_FLAGS)
+
+.PHONY: clean mrproper
 
 clean:
-	$(RM) $(TARGET_EXEC)
-	$(RM) -r $(BUILD_DIR)
-	
-MKDIR_P ?= mkdir -p
+	@echo "Cleaning object files..."
+	@rm -rf $(BIN_DIRECTORY)
+	@mkdir $(BIN_DIRECTORY)
+
+mrproper: clean
+	@echo "Cleaning target executable..."
+	@rm -rf $(TARGET)
