@@ -19,7 +19,7 @@ namespace hspp
 			void loop();
 		
 		public:
-			Servlet(Port port, int queueLength);
+			Servlet(Port port, int queueLength = 256);
 		
 			std::thread start();
 			void stop();

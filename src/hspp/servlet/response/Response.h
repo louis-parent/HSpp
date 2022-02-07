@@ -21,7 +21,7 @@ namespace hspp
 			void setContent(const std::string& content);
 			std::string& getContent();
 		
-			void send();
+			virtual void send();
 	};
 }
 
