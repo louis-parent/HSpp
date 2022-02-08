@@ -3,15 +3,23 @@
 
 using namespace hspp;
 
+Port HTTPServlet::HTTP_PROD_PORT = 80;
+Port HTTPServlet::HTTP_DEV_PORT = 8080;
+			
 HTTPServlet::HTTPServlet(Port port, int queueLength) : Servlet(port, queueLength)
 {
 }
 
-void HTTPServlet::request(const Request& request, Response& response)
+bool HTTPServlet::request(const Request& request, Response& response)
 {
 	HTTPRequest httpRequest(request);
 	HTTPResponse httpResponse(response);
+	
 	this->request(httpRequest, httpResponse);
+		
+	response.setContent(httpResponse.getContent());
+	
+	return true;
 }
 
 void HTTPServlet::request(const HTTPRequest& request, HTTPResponse& response)

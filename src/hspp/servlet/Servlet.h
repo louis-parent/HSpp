@@ -17,6 +17,7 @@ namespace hspp
 			int queueLength;
 		
 			void loop();
+			void transaction(ConnectedClient client);
 		
 		public:
 			Servlet(Port port, int queueLength = 256);
@@ -26,7 +27,7 @@ namespace hspp
 		
 		protected:
 			virtual void onCreate() {}
-			virtual void request(const Request& request, Response& response) {}
+			virtual bool request(const Request& request, Response& response) { return false; }
 			virtual void onDestroy() {}		
 	};
 }

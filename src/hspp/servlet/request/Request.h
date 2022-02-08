@@ -17,6 +17,8 @@ namespace hspp
 		
 			const ConnectedClient& getSource() const;
 			const std::string& getContent() const;
+			
+			bool hasReceived() const;
 		
 		private:
 			void readAllFromSource();

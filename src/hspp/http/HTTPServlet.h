@@ -10,10 +10,13 @@ namespace hspp
 	class HTTPServlet : public Servlet
 	{
 		public:
+			static Port HTTP_PROD_PORT;
+			static Port HTTP_DEV_PORT;
+			
 			HTTPServlet(Port port, int queueLength = 256);
 		
 		protected:
-			void request(const Request& request, Response& response) override;
+			bool request(const Request& request, Response& response) override;
 			virtual void request(const HTTPRequest& request, HTTPResponse& response);
 		
 			virtual void get(const HTTPRequest& request, HTTPResponse& response) {}
