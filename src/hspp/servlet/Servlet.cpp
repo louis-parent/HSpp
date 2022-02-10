@@ -1,5 +1,5 @@
 #include "Servlet.h"
-#include <iostream>
+
 using namespace hspp;
 
 Servlet::Servlet(Port port, int queueLength) : socket(port), isRunning(false), queueLength(queueLength)
