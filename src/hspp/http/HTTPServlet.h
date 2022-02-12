@@ -22,8 +22,13 @@ namespace hspp
 			std::set<Plugin, PluginComparator> plugins;
 		
 		public:
-			static Port HTTP_PROD_PORT;
-			static Port HTTP_DEV_PORT;
+			static const std::string HTTP_VERSION_0_9;
+			static const std::string HTTP_VERSION_1_0;
+			static const std::string HTTP_VERSION_1_1;
+			static const std::string HTTP_VERSION_2_0;
+
+			static const Port HTTP_PORT_PROD;
+			static const Port HTTP_PORT_DEV;
 			
 			HTTPServlet(Port port, int queueLength = 256);
 		

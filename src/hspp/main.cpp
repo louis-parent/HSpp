@@ -7,7 +7,9 @@ using namespace hspp;
 class NotWorkingServlet : public HTTPServlet
 {
 	public:
-		NotWorkingServlet() : HTTPServlet(HTTPServlet::HTTP_DEV_PORT) {}
+		NotWorkingServlet() : HTTPServlet(HTTPServlet::HTTP_PORT_DEV) {}
+		
+		
 };
 
 int main(int argc, char* argv[])

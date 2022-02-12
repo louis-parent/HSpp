@@ -11,6 +11,8 @@ namespace hspp
 	class HTTPRequest : public Request
 	{
 		private:
+			static const std::string EMPTY_HEADER_VALUE;
+		
 			HTTPMethod method;
 			std::string target;
 			std::string version;
@@ -24,6 +26,7 @@ namespace hspp
 			const std::string& getTarget() const;
 			const std::string& getVersion() const;
 			const std::map<std::string, std::string>& getHeaders() const;
+			const std::string& getHeader(const std::string& key) const;
 			const std::string& getBody() const;
 
 		private:
