@@ -10,6 +10,8 @@ bool PluginComparator::operator()(const Plugin& left, const Plugin& right)
 	return left.getPriority() > right.getPriority();
 }
 
+const std::vector<Plugin> HTTPServlet::DEFAULT_PLUGINS = std::vector<Plugin>();
+
 const std::string HTTPServlet::HTTP_VERSION_0_9 = "HTTP/0.9";
 const std::string HTTPServlet::HTTP_VERSION_1_0 = "HTTP/1.0";
 const std::string HTTPServlet::HTTP_VERSION_1_1 = "HTTP/1.1";
@@ -18,9 +20,16 @@ const std::string HTTPServlet::HTTP_VERSION_2_0 = "HTTP/2.0";
 const Port HTTPServlet::HTTP_PORT_PROD = 80;
 const Port HTTPServlet::HTTP_PORT_DEV = 8080;
 
-HTTPServlet::HTTPServlet(Port port, int queueLength) : Servlet(port, queueLength)
+HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, HTTPServlet::DEFAULT_PLUGINS, queueLength)
 {
-	this->plugins.insert(KeepAlivePlugin());
+}
+
+HTTPServlet::HTTPServlet(Port port, const std::vector<Plugin>& plugins, int queueLength) : Servlet(port, queueLength)
+{
+	for(const Plugin& plugin : plugins)
+	{
+		this->plugins.insert(plugin);
+	}
 }
 
 bool HTTPServlet::add(const Plugin& plugin)

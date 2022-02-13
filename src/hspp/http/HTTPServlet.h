@@ -2,6 +2,7 @@
 #define __HTTP_SERVLET_H__
 
 #include <set>
+#include <vector>
 
 #include "../servlet/Servlet.h"
 #include "request/HTTPRequest.h"
@@ -19,6 +20,8 @@ namespace hspp
 	class HTTPServlet : public Servlet
 	{
 		private:
+			static const std::vector<Plugin> DEFAULT_PLUGINS;
+		
 			std::set<Plugin, PluginComparator> plugins;
 		
 		public:
@@ -31,6 +34,7 @@ namespace hspp
 			static const Port HTTP_PORT_DEV;
 			
 			HTTPServlet(Port port, int queueLength = 256);
+			HTTPServlet(Port port, const std::vector<Plugin>& plugins, int queueLength = 256);
 		
 			bool add(const Plugin& plugin);
 			bool remove(const Plugin& plugin);
