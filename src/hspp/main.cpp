@@ -5,18 +5,25 @@
 
 using namespace hspp;
 
-class NotWorkingServlet : public HTTPServlet
+class RequestPrinterServlet : public HTTPServlet
 {
 	public:
-		NotWorkingServlet() : HTTPServlet(HTTPServlet::HTTP_PORT_DEV)
+		RequestPrinterServlet() : HTTPServlet(HTTPServlet::HTTP_PORT_DEV)
 		{
 			this->add(KeepAlivePlugin());
-		}		
+		}
+		
+		bool request(const HTTPRequest& request, HTTPResponse& response)
+		{
+			std::cout << "FROM " << request.getSource().getAddress() << " RECEIVED : " << std::endl;
+			std::cout << request.getContent() << std::endl << std::endl;
+			return false;
+		}
 };
 
 int main(int argc, char* argv[])
 {
-	NotWorkingServlet serv;
+	RequestPrinterServlet serv;
 	std::thread t = serv.start();
 
 	int stop;
