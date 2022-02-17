@@ -11,18 +11,23 @@ namespace hspp
 	class Plugin
 	{
 		private:
+			static long nextId;
+		
+			long id;
 			long priority;
 			
 		public:
-			Plugin() : Plugin(0) {}
-			Plugin(long priority) : priority(priority) {}
+			Plugin();
+			Plugin(long priority);
 		
-			long getPriority() const { return this->priority; }
+			long getPriority() const;
 		
-			virtual void onCreate(HTTPServlet& servlet) {}
-			virtual void onDestroy(HTTPServlet& servlet) {}
-			virtual bool beforeRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response) { return false; }
-			virtual bool afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response) { return false; }
+			virtual void onCreate(HTTPServlet& servlet);
+			virtual void onDestroy(HTTPServlet& servlet);
+			virtual bool beforeRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response);
+			virtual bool afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response);
+		
+			bool operator==(const Plugin& other);
 	};
 }
 

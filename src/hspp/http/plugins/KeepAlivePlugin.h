@@ -22,7 +22,7 @@ namespace hspp
 		
 		public:
 			KeepAlivePlugin(int timeout = 5, int maxTransaction = 1000);
-		
+
 			bool afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response) override;
 		
 		private:

@@ -1,16 +1,15 @@
 #include "HTTPServlet.h"
 #include "HTTPMethod.h"
 
+#include <algorithm>
 #include "plugins/KeepAlivePlugin.h"
 
 using namespace hspp;
 
-bool PluginComparator::operator()(const Plugin& left, const Plugin& right)
+bool PluginComparator::operator()(const Plugin* left, const Plugin* right)
 {
-	return left.getPriority() > right.getPriority();
+	return left->getPriority() > right->getPriority();
 }
-
-const std::vector<Plugin> HTTPServlet::DEFAULT_PLUGINS = std::vector<Plugin>();
 
 const std::string HTTPServlet::HTTP_VERSION_0_9 = "HTTP/0.9";
 const std::string HTTPServlet::HTTP_VERSION_1_0 = "HTTP/1.0";
@@ -20,42 +19,62 @@ const std::string HTTPServlet::HTTP_VERSION_2_0 = "HTTP/2.0";
 const Port HTTPServlet::HTTP_PORT_PROD = 80;
 const Port HTTPServlet::HTTP_PORT_DEV = 8080;
 
-HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, HTTPServlet::DEFAULT_PLUGINS, queueLength)
+HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, std::vector<Plugin*>(), queueLength)
 {
+	this->add(new KeepAlivePlugin());
 }
 
-HTTPServlet::HTTPServlet(Port port, const std::vector<Plugin>& plugins, int queueLength) : Servlet(port, queueLength)
+HTTPServlet::HTTPServlet(Port port, const std::vector<Plugin*>& plugins, int queueLength) : Servlet(port, queueLength)
 {
-	for(const Plugin& plugin : plugins)
+	for(Plugin* plugin : plugins)
 	{
-		this->plugins.insert(plugin);
+		this->add(plugin);
 	}
 }
 
-bool HTTPServlet::add(const Plugin& plugin)
+HTTPServlet::~HTTPServlet()
 {
-	this->plugins.insert(plugin);
+	for(Plugin* plugin : this->plugins)
+	{
+		delete plugin;
+	}
+}
+
+bool HTTPServlet::add(Plugin* plugin)
+{
+	this->plugins.push_back(plugin);
+	std::sort(this->plugins.begin(), this->plugins.end(), HTTPServlet::PLUGIN_COMPARATOR);
 	return true;
 }
 
-bool HTTPServlet::remove(const Plugin& plugin)
+bool HTTPServlet::remove(Plugin* plugin)
 {
-	return this->plugins.erase(plugin) > 0;
+	std::vector<Plugin*>::iterator position = std::find(this->plugins.begin(), this->plugins.end(), plugin);
+	
+	if (position != this->plugins.end())
+	{
+    	this->plugins.erase(position);
+    	return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void HTTPServlet::onCreate()
 {
-	for(Plugin plugin : this->plugins)
+	for(Plugin* plugin : this->plugins)
 	{
-		plugin.onCreate(*this);
+		plugin->onCreate(*this);
 	}
 }
 
 void HTTPServlet::onDestroy()
 {
-	for(Plugin plugin : this->plugins)
+	for(Plugin* plugin : this->plugins)
 	{
-		plugin.onDestroy(*this);
+		plugin->onDestroy(*this);
 	}
 }
 
@@ -65,16 +84,16 @@ bool HTTPServlet::request(const Request& request, Response& response)
 	HTTPRequest httpRequest(request);
 	HTTPResponse httpResponse(response);
 	
-	for(Plugin plugin : this->plugins)
+	for(Plugin* plugin : this->plugins)
 	{
-		keepAlive |= plugin.beforeRequest(*this, httpRequest, httpResponse);
+		keepAlive |= plugin->beforeRequest(*this, httpRequest, httpResponse);
 	}
 	
 	keepAlive |= this->request(httpRequest, httpResponse);
 
-	for(Plugin plugin : this->plugins)
+	for(Plugin* plugin : this->plugins)
 	{
-		keepAlive |= plugin.afterRequest(*this, httpRequest, httpResponse);
+		keepAlive |= plugin->afterRequest(*this, httpRequest, httpResponse);
 	}
 
 	response.setContent(httpResponse.getContent());

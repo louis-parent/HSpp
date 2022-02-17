@@ -10,7 +10,6 @@ class RequestPrinterServlet : public HTTPServlet
 	public:
 		RequestPrinterServlet() : HTTPServlet(HTTPServlet::HTTP_PORT_DEV)
 		{
-			this->add(KeepAlivePlugin());
 		}
 		
 		bool request(const HTTPRequest& request, HTTPResponse& response)

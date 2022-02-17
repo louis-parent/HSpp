@@ -1,7 +1,6 @@
 #ifndef __HTTP_SERVLET_H__
 #define __HTTP_SERVLET_H__
 
-#include <set>
 #include <vector>
 
 #include "../servlet/Servlet.h"
@@ -14,15 +13,15 @@ namespace hspp
 	class PluginComparator
 	{
 		public:
-			bool operator()(const Plugin& left, const Plugin& right);
+			bool operator()(const Plugin* left, const Plugin* right);
 	};
 	
 	class HTTPServlet : public Servlet
 	{
 		private:
-			static const std::vector<Plugin> DEFAULT_PLUGINS;
+			static const PluginComparator PLUGIN_COMPARATOR;
 		
-			std::set<Plugin, PluginComparator> plugins;
+			std::vector<Plugin*> plugins;
 		
 		public:
 			static const std::string HTTP_VERSION_0_9;
@@ -34,10 +33,11 @@ namespace hspp
 			static const Port HTTP_PORT_DEV;
 			
 			HTTPServlet(Port port, int queueLength = 256);
-			HTTPServlet(Port port, const std::vector<Plugin>& plugins, int queueLength = 256);
+			HTTPServlet(Port port, const std::vector<Plugin*>& plugins, int queueLength = 256);
+			~HTTPServlet();
 		
-			bool add(const Plugin& plugin);
-			bool remove(const Plugin& plugin);
+			bool add(Plugin* plugin);
+			bool remove(Plugin* plugin);
 		
 		protected:
 			virtual void onCreate() override;
