@@ -39,6 +39,8 @@ namespace hspp
 			bool add(Plugin* plugin);
 			bool remove(Plugin* plugin);
 		
+			static bool isValidHTTPVersion(const std::string& version);
+		
 		protected:
 			virtual void onCreate() override;
 			virtual void onDestroy() override;

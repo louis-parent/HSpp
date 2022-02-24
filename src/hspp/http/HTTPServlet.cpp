@@ -62,6 +62,11 @@ bool HTTPServlet::remove(Plugin* plugin)
 	}
 }
 
+bool HTTPServlet::isValidHTTPVersion(const std::string& version)
+{
+	return version == HTTPServlet::HTTP_VERSION_0_9 || version == HTTPServlet::HTTP_VERSION_1_0 || version == HTTPServlet::HTTP_VERSION_1_1 || version == HTTPServlet::HTTP_VERSION_2_0;
+}
+
 void HTTPServlet::onCreate()
 {
 	for(Plugin* plugin : this->plugins)
