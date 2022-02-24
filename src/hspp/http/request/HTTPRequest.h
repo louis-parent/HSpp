@@ -12,9 +12,9 @@ namespace hspp
 	{
 		private:
 			static const std::string EMPTY_HEADER_VALUE;
-			static const std::string REQUEST_LINE_SEPARATOR;
-			static const std::string HEADER_KEY_VALUE_SEPARATOR;
-			static const std::string REQUEST_LINE_ITEM_SEPARATOR;
+			static const char REQUEST_LINE_SEPARATOR;
+			static const char HEADER_KEY_VALUE_SEPARATOR;
+			static const char REQUEST_LINE_ITEM_SEPARATOR;
 		
 			HTTPMethod method;
 			std::string target;

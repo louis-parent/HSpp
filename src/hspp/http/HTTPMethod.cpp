@@ -70,6 +70,11 @@ HTTPMethod& HTTPMethod::operator=(const HTTPMethod& other)
 	return *this;
 }
 
+bool HTTPMethod::operator==(const HTTPMethod& other)
+{
+	return this->name == other.name;
+}
+
 HTTPMethod::HTTPMethod(const std::string& name) : name(name)
 {
 }

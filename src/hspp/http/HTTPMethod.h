@@ -24,7 +24,9 @@ namespace hspp
 			HTTPMethod();
 			HTTPMethod(const HTTPMethod& other);
 		
-			HTTPMethod& operator=(const HTTPMethod& other);			
+			HTTPMethod& operator=(const HTTPMethod& other);
+			
+			bool operator==(const HTTPMethod& other);		
 		
 			friend std::ostream& operator<<(std::ostream& os, const HTTPMethod& method)
 			{

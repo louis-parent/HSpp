@@ -107,37 +107,45 @@ bool HTTPServlet::request(const Request& request, Response& response)
 
 bool HTTPServlet::request(const HTTPRequest& request, HTTPResponse& response)
 {
-	switch(request.getMethod())
+	if(request.getMethod() == HTTPMethod::GET)
 	{
-		case HTTPMethod::GET:
-			return this->get(request, response);
-			
-		case HTTPMethod::HEAD:
-			return this->head(request, response);
-			
-		case HTTPMethod::POST:
-			return this->post(request, response);
-			
-		case HTTPMethod::PUT:
-			return this->put(request, response);
-			
-		case HTTPMethod::DELETE:
-			return this->del(request, response);
-			
-		case HTTPMethod::CONNECT:
-			return this->connect(request, response);
-			
-		case HTTPMethod::OPTIONS:
-			return this->options(request, response);
-			
-		case HTTPMethod::TRACE:
-			return this->trace(request, response);
-			
-		case HTTPMethod::PATCH:
-			return this->patch(request, response);
-			
-		default:
-			return false;
+		return this->get(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::HEAD)
+	{
+		return this->head(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::POST)
+	{
+		return this->post(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::PUT)
+	{
+		return this->put(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::DELETE)
+	{
+		return this->del(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::CONNECT)
+	{
+		return this->connect(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::OPTIONS)
+	{
+		return this->options(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::TRACE)
+	{
+		return this->trace(request, response);
+	}
+	else if(request.getMethod() == HTTPMethod::PATCH)
+	{
+		return this->patch(request, response);
+	}
+	else
+	{
+		return false;
 	}
 }
 

@@ -8,7 +8,7 @@ using namespace hspp;
 class RequestPrinterServlet : public HTTPServlet
 {
 	public:
-		RequestPrinterServlet() : HTTPServlet(HTTPServlet::HTTP_PORT_DEV)
+		RequestPrinterServlet() : HTTPServlet(1999)
 		{
 		}
 		
