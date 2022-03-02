@@ -1,6 +1,5 @@
 #include "HTTPRequest.h"
 
-#include <iostream>
 #include <sstream>
 #include "../exception/RequestParsingError.h"
 #include "../exception/InvalidVersionError.h"
@@ -10,8 +9,8 @@
 using namespace hspp;
 
 const std::string HTTPRequest::EMPTY_HEADER_VALUE = "";
-const char HTTPRequest::REQUEST_LINE_SEPARATOR = '\n';
-const char HTTPRequest::HEADER_KEY_VALUE_SEPARATOR = '=';
+const std::string HTTPRequest::REQUEST_LINE_SEPARATOR = "\r\n";
+const char HTTPRequest::HEADER_KEY_VALUE_SEPARATOR = ':';
 const char HTTPRequest::REQUEST_LINE_ITEM_SEPARATOR = ' ';
 
 HTTPRequest::HTTPRequest(const Request& request) : Request(request)
@@ -58,13 +57,16 @@ const std::string& HTTPRequest::getBody() const
 
 void HTTPRequest::parseRequest()
 {
-	std::istringstream stream(this->getContent());
-	
-	std::string currentLine;
+	std::string leftToParse = this->getContent();
+	std::string currentLine = "";
 	bool isRequestLine = true; // True because request line must be the first line of the request
 	
-	while(std::getline(stream, currentLine, HTTPRequest::REQUEST_LINE_SEPARATOR)) // While end of the request is not reached
-	{		
+	do
+	{
+		currentLine = leftToParse.substr(0, leftToParse.find(HTTPRequest::REQUEST_LINE_SEPARATOR));
+		leftToParse = leftToParse.substr(leftToParse.find(HTTPRequest::REQUEST_LINE_SEPARATOR) + HTTPRequest::REQUEST_LINE_SEPARATOR.size());
+	
+	
 		if(isRequestLine) // Is first line aka request line
 		{
 			this->parseRequestLine(currentLine);
@@ -72,27 +74,19 @@ void HTTPRequest::parseRequest()
 		}
 		else if(currentLine == HTTPRequest::EMPTY_HEADER_VALUE) // If it's empty line, it's the header/body separator
 		{
-			 std::getline(stream, this->body); // the body is all the content to the end
+			this->body = leftToParse; // the body is all the content to the end
+			leftToParse = "";
 		}
 		else // We still in the headers
 		{
 			this->parseHeader(currentLine);
 		}
-	}	
-	
-	std::cout << this->method << " " << this->target << " " << this->version << std::endl;
-	
-	for(std::pair<std::string, std::string> header : this->headers)
-	{
-		std::cout << header.first << "=" << header.second << std::endl;	
-	}
-	
-	std::cout << std::endl << this->body << std::endl;
+	}while(leftToParse.size() > 0); // While end of the request is not reached
 }
 
 void HTTPRequest::parseRequestLine(const std::string& line)
 {
-	std::istringstream stream(line.substr(0, line.size() - 1));
+	std::istringstream stream(line);
 	std::string token;
 	
 	if(std::getline(stream, token, HTTPRequest::REQUEST_LINE_ITEM_SEPARATOR))
