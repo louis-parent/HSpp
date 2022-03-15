@@ -70,9 +70,34 @@ HTTPMethod& HTTPMethod::operator=(const HTTPMethod& other)
 	return *this;
 }
 
-bool HTTPMethod::operator==(const HTTPMethod& other)
+const std::string HTTPMethod::getName() const
+{
+	return this->name;
+}
+
+bool HTTPMethod::operator==(const HTTPMethod& other) const
 {
 	return this->name == other.name;
+}
+
+bool HTTPMethod::operator<(const HTTPMethod& other) const
+{
+	return this->name < other.name;
+}
+
+bool HTTPMethod::operator<=(const HTTPMethod& other) const
+{
+	return this->name <= other.name;
+}
+
+bool HTTPMethod::operator>(const HTTPMethod& other) const
+{
+	return this->name > other.name;
+}
+
+bool HTTPMethod::operator>=(const HTTPMethod& other) const
+{
+	return this->name >= other.name;
 }
 
 HTTPMethod::HTTPMethod(const std::string& name) : name(name)

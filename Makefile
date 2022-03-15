@@ -2,7 +2,7 @@ COMPILER_OPTIONS=-Wall -ansi -pedantic -std=c++11
 LINKER_OPTIONS=-lpthread
 
 COMPILER=g++
-TARGET=hspp
+TARGET=server.run
 
 OBJECT_EXTENSION=.o
 SOURCE_EXTENSION=.cpp
