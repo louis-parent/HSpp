@@ -17,9 +17,14 @@ HTTPRequest::HTTPRequest(const Request& request) : Request(request)
 	this->parseRequest();
 }
 
-HTTPMethod HTTPRequest::getMethod() const
+const HTTPMethod& HTTPRequest::getMethod() const
 {
 	return this->method;
+}
+
+void HTTPRequest::setMethod(const HTTPMethod& method)
+{
+	this->method = method;
 }
 
 const std::string& HTTPRequest::getTarget() const
@@ -27,9 +32,19 @@ const std::string& HTTPRequest::getTarget() const
 	return this->target;
 }
 
+void HTTPRequest::setTarget(const std::string& target)
+{
+	this->target = target;
+}
+
 const std::string& HTTPRequest::getVersion() const
 {
 	return this->version;
+}
+
+void HTTPRequest::setVersion(const std::string& version)
+{
+	this->version = version;
 }
 
 const std::map<std::string, std::string>& HTTPRequest::getHeaders() const
@@ -49,9 +64,29 @@ const std::string& HTTPRequest::getHeader(const std::string& key) const
 	}
 }
 
+void HTTPRequest::setHeader(const std::string& key, const std::string& value)
+{
+	this->headers[key] = value;
+}
+
 const std::string& HTTPRequest::getBody() const
 {
 	return this->body;
+}
+
+void HTTPRequest::setBody(const std::string& body)
+{
+	this->body = body;
+}
+
+void* HTTPRequest::getCustom(const std::string& key) const
+{
+	return this->customs.at(key);
+}
+
+void HTTPRequest::setCustom(const std::string& key, void* data)
+{
+	this->customs[key] = data;
 }
 
 void HTTPRequest::parseRequest()
@@ -73,7 +108,7 @@ void HTTPRequest::parseRequest()
 		}
 		else if(currentLine == HTTPRequest::EMPTY_HEADER_VALUE) // If it's empty line, it's the header/body separator
 		{
-			this->body = leftToParse; // the body is all the content to the end
+			this->setBody(leftToParse); // the body is all the content to the end
 			leftToParse = "";
 		}
 		else // We still in the headers
@@ -90,17 +125,17 @@ void HTTPRequest::parseRequestLine(const std::string& line)
 	
 	if(std::getline(stream, token, HTTPRequest::REQUEST_LINE_ITEM_SEPARATOR))
 	{
-		this->method = HTTPMethod::forName(token);
+		this->setMethod(HTTPMethod::forName(token));
 		
 		if(std::getline(stream, token, HTTPRequest::REQUEST_LINE_ITEM_SEPARATOR))
 		{
-			this->target = token;
+			this->setTarget(token);
 			
 			if(std::getline(stream, token, HTTPRequest::REQUEST_LINE_ITEM_SEPARATOR))
 			{
 				if(HTTPServlet::isValidHTTPVersion(token))
 				{
-					this->version = token;
+					this->setVersion(token);
 				}
 				else
 				{
@@ -133,7 +168,7 @@ void HTTPRequest::parseHeader(const std::string& line)
 		std::string value;
 		std::getline(stream, value);
 		
-		this->headers.insert(std::pair<std::string, std::string>(key, value));
+		this->setHeader(key, value);
 	}
 	else
 	{
