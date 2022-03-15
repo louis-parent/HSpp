@@ -14,8 +14,7 @@ class RequestPrinterServlet : public HTTPServlet
 		
 		bool request(const HTTPRequest& request, HTTPResponse& response)
 		{
-			std::cout << "FROM " << request.getSource().getAddress() << " RECEIVED : " << std::endl;
-			std::cout << request.getContent() << std::endl << std::endl;
+			std::cout << "[LOG] " << request.getSource().getAddress() << " : " << request.getMethod() << " " << request.getTarget() << std::endl;
 			return false;
 		}
 };

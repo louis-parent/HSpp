@@ -21,7 +21,6 @@ const Port HTTPServlet::HTTP_PORT_DEV = 8080;
 
 HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, std::vector<Plugin*>(), queueLength)
 {
-	this->add(new KeepAlivePlugin());
 }
 
 HTTPServlet::HTTPServlet(Port port, const std::vector<Plugin*>& plugins, int queueLength) : Servlet(port, queueLength)

@@ -60,7 +60,7 @@ HTTPMethod::HTTPMethod() : HTTPMethod(HTTPMethod::GET)
 {
 }
 
-HTTPMethod::HTTPMethod(const HTTPMethod& other) : name(name)
+HTTPMethod::HTTPMethod(const HTTPMethod& other) : name(other.name)
 {
 }
 
