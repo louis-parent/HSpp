@@ -98,6 +98,14 @@ namespace hspp
 			bool operator>(const HTTPStatus& other) const;
 			bool operator>=(const HTTPStatus& other) const;
 		
+			bool operator==(StatusCode code) const;
+			bool operator<(StatusCode code) const;
+			bool operator<=(StatusCode code) const;
+			bool operator>(StatusCode code) const;
+			bool operator>=(StatusCode code) const;
+		
+			bool operator==(const std::string& text) const;
+		
 			friend std::ostream& operator<<(std::ostream& os, const HTTPStatus& status)
 			{
 				return os << status.code << " " << status.text;

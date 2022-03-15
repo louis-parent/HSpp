@@ -142,3 +142,33 @@ bool HTTPStatus::operator>=(const HTTPStatus& other) const
 {
 	return this->code >= other.code;
 }
+
+bool HTTPStatus::operator==(StatusCode code) const
+{
+	return this->code == code;
+}
+
+bool HTTPStatus::operator<(StatusCode code) const
+{
+	return this->code < code;
+}
+
+bool HTTPStatus::operator<=(StatusCode code) const
+{
+	return this->code <= code;
+}
+
+bool HTTPStatus::operator>(StatusCode code) const
+{
+	return this->code > code;
+}
+
+bool HTTPStatus::operator>=(StatusCode code) const
+{
+	return this->code >= code;
+}
+
+bool HTTPStatus::operator==(const std::string& text) const
+{
+	return this->text == text;
+}
