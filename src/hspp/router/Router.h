@@ -13,7 +13,7 @@ namespace hspp
 		private:
 			std::map<const HTTPMethod, std::map<const std::string, RouteAction*>> routes;
 		
-			bool doAction(const HTTPMethod& method, const HTTPRequest& request, HTTPResponse& response);
+			bool process(const HTTPMethod& method, const HTTPRequest& request, HTTPResponse& response);
 			RouteAction* findMatchingRoute(const HTTPMethod& method, const std::string& path);
 		
 		public:

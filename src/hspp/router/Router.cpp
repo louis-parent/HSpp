@@ -4,13 +4,13 @@
 
 using namespace hspp;
 
-bool Router::doAction(const HTTPMethod& method, const HTTPRequest& request, HTTPResponse& response)
+bool Router::process(const HTTPMethod& method, const HTTPRequest& request, HTTPResponse& response)
 {
 	RouteAction* action = this->findMatchingRoute(method, request.getTarget());
 	
 	if(action != nullptr)
 	{
-		return (*action)(request, response);
+		return action->process(request, response);
 	}
 	else
 	{
@@ -109,45 +109,45 @@ void Router::route(const HTTPMethod& method, const std::string& path, RouteActio
 
 bool Router::get(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::GET, request, response);
 }
 
 bool Router::head(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::HEAD, request, response);
 }
 
 bool Router::post(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::POST, request, response);
 }
 
 bool Router::put(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::PUT, request, response);
 }
 
 bool Router::del(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::DELETE, request, response);
 }
 
 bool Router::connect(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::CONNECT, request, response);
 }
 
 bool Router::options(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::OPTIONS, request, response);
 }
 
 bool Router::trace(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::TRACE, request, response);
 }
 
 bool Router::patch(const HTTPRequest& request, HTTPResponse& response)
 {
-	return false;
+	return this->process(HTTPMethod::PATCH, request, response);
 }

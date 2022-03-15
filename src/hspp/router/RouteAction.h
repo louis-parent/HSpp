@@ -9,7 +9,8 @@ namespace hspp
 	class RouteAction
 	{
 		public:
-			virtual bool operator()(const HTTPRequest& request, HTTPResponse& response);
+			virtual ~RouteAction() {};
+			virtual bool process(const HTTPRequest& request, HTTPResponse& response) = 0;
 	};
 }
 

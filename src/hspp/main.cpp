@@ -1,18 +1,13 @@
 #include <iostream>
 #include <thread>
-#include "http/HTTPServlet.h"
-#include "http/plugins/KeepAlivePlugin.h"
+#include "router/Router.h"
 
 using namespace hspp;
 
-class RequestPrinterServlet : public HTTPServlet
+class RequestPrinterAction : public RouteAction
 {
-	public:
-		RequestPrinterServlet() : HTTPServlet(1999)
-		{
-		}
-		
-		bool request(const HTTPRequest& request, HTTPResponse& response)
+	public:	
+		bool process(const HTTPRequest& request, HTTPResponse& response) override
 		{
 			std::cout << "[LOG] " << request.getSource().getAddress() << " : " << request.getMethod() << " " << request.getTarget() << std::endl;
 			return false;
@@ -21,13 +16,24 @@ class RequestPrinterServlet : public HTTPServlet
 
 int main(int argc, char* argv[])
 {
-	RequestPrinterServlet serv;
-	std::thread t = serv.start();
-
-	int stop;
-	std::cin >> stop;
-	serv.stop();
+	std::cout << "Server Construction..." << std::endl;
+	Router router(1999);
 	
+	std::cout << "Creation of routes..." << std::endl;
+	router.get("/", new RequestPrinterAction());
+	
+	std::cout << "Server Starting..." << std::endl;
+	std::thread t = router.start();
+	
+	std::cout << "RUNNING : " << std::endl;
+	
+	std::string cmd;
+	while(cmd != "stop")
+	{
+		std::cin >> cmd;
+	}
+	
+	router.stop();
 	t.join();
 	
 	return 0;
