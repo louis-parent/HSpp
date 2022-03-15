@@ -7,8 +7,8 @@ using namespace hspp;
 HTTPResponse::HTTPResponse(const Response& response)
 	: Response(response),
 	version("HTTP/1.1"),
-	statusCode(501),
-	statusText("Not Implemented")
+	statusCode(404),
+	statusText("Not Found")
 {
 	this->updateRawContent();
 }
