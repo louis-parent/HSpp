@@ -70,11 +70,11 @@ HTTPMethod& HTTPMethod::operator=(const HTTPMethod& other)
 	return *this;
 }
 
-const std::string HTTPMethod::getName() const
+const std::string& HTTPMethod::getName() const
 {
 	return this->name;
 }
-
+			
 bool HTTPMethod::operator==(const HTTPMethod& other) const
 {
 	return this->name == other.name;
@@ -102,4 +102,15 @@ bool HTTPMethod::operator>=(const HTTPMethod& other) const
 
 HTTPMethod::HTTPMethod(const std::string& name) : name(name)
 {
+}
+
+HTTPMethod& HTTPMethod::operator=(const std::string& name)
+{
+	this->name = name;
+	return *this;
+}
+
+void HTTPMethod::setName(const std::string& name)
+{
+	this->name = name;
 }

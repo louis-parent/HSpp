@@ -25,8 +25,8 @@ namespace hspp
 			HTTPMethod(const HTTPMethod& other);
 		
 			HTTPMethod& operator=(const HTTPMethod& other);
-			
-			const std::string getName() const;
+		
+			const std::string& getName() const;
 		
 			bool operator==(const HTTPMethod& other) const;
 			bool operator<(const HTTPMethod& other) const;
@@ -43,6 +43,9 @@ namespace hspp
 			std::string name;
 		
 			HTTPMethod(const std::string& name);
+		
+			HTTPMethod& operator=(const std::string& name);
+			void setName(const std::string& name);
 	};
 }
 
