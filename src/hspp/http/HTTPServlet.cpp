@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "method/HTTPMethod.h"
+#include "exception/InvalidVersionError.h"
 
 using namespace hspp;
 
@@ -84,19 +85,27 @@ void HTTPServlet::onDestroy()
 bool HTTPServlet::request(const Request& request, Response& response)
 {
 	bool keepAlive = false;
-	HTTPRequest httpRequest(request);
 	HTTPResponse httpResponse(response);
-	
-	for(Plugin* plugin : this->plugins)
-	{
-		keepAlive |= plugin->beforeRequest(*this, httpRequest, httpResponse);
-	}
-	
-	keepAlive |= this->request(httpRequest, httpResponse);
 
-	for(Plugin* plugin : this->plugins)
+	try
 	{
-		keepAlive |= plugin->afterRequest(*this, httpRequest, httpResponse);
+		HTTPRequest httpRequest(request);
+		
+		for(Plugin* plugin : this->plugins)
+		{
+			keepAlive |= plugin->beforeRequest(*this, httpRequest, httpResponse);
+		}
+		
+		keepAlive |= this->request(httpRequest, httpResponse);
+
+		for(Plugin* plugin : this->plugins)
+		{
+			keepAlive |= plugin->afterRequest(*this, httpRequest, httpResponse);
+		}
+	}
+	catch(const InvalidVersionError& error)
+	{
+		httpResponse.setStatus(HTTPStatus::HTTPVersionNotSupported);
 	}
 
 	response.setContent(httpResponse.getContent());
