@@ -4,8 +4,7 @@
 #include <string>
 #include <map>
 #include "../../servlet/response/Response.h"
-
-typedef unsigned int StatusCode;
+#include "status/HTTPStatus.h"
 
 namespace hspp
 {

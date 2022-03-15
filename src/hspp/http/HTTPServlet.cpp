@@ -1,8 +1,7 @@
 #include "HTTPServlet.h"
-#include "HTTPMethod.h"
 
 #include <algorithm>
-#include "plugins/KeepAlivePlugin.h"
+#include "method/HTTPMethod.h"
 
 using namespace hspp;
 

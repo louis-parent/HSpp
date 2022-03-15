@@ -2,7 +2,7 @@
 #define __HTTP_METHOD_H__
 
 #include <iostream>
-#include "./exception/UnknownMethodError.h"
+#include "../exception/UnknownMethodError.h"
 
 namespace hspp
 {	

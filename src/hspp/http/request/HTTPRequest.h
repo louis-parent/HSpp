@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include "../../servlet/request/Request.h"
-#include "../HTTPMethod.h"
+#include "../method/HTTPMethod.h"
 
 namespace hspp
 {

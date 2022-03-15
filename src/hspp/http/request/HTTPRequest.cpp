@@ -4,7 +4,6 @@
 #include "../exception/RequestParsingError.h"
 #include "../exception/InvalidVersionError.h"
 #include "../HTTPServlet.h"
-#include "../HTTPMethod.h"
 
 using namespace hspp;
 
