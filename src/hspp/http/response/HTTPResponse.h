@@ -12,8 +12,7 @@ namespace hspp
 	{
 		private:		
 			std::string version;
-			StatusCode statusCode;
-			std::string statusText;
+			HTTPStatus status;
 			std::map<std::string, std::string> headers;
 			std::string body;
 
@@ -22,6 +21,9 @@ namespace hspp
 
 			const std::string& getVersion() const;
 			void setVersion(const std::string& version);
+		
+			const HTTPStatus& getStatus() const;
+			void setStatus(const HTTPStatus& status);
 		
 			StatusCode getStatusCode() const;
 			void setStatusCode(StatusCode code);

@@ -4,11 +4,7 @@
 
 using namespace hspp;
 
-HTTPResponse::HTTPResponse(const Response& response)
-	: Response(response),
-	version("HTTP/1.1"),
-	statusCode(404),
-	statusText("Not Found")
+HTTPResponse::HTTPResponse(const Response& response) : Response(response), version("HTTP/1.1")
 {
 	this->updateRawContent();
 }
@@ -24,25 +20,36 @@ void HTTPResponse::setVersion(const std::string& version)
 	this->updateRawContent();
 }
 
+const HTTPStatus& HTTPResponse::getStatus() const
+{
+	return this->status;
+}
+
+void HTTPResponse::setStatus(const HTTPStatus& status)
+{
+	this->status = status;
+	this->updateRawContent();
+}
+
 StatusCode HTTPResponse::getStatusCode() const
 {
-	return this->statusCode;
+	return this->status.getCode();
 }
 
 void HTTPResponse::setStatusCode(StatusCode code)
 {
-	this->statusCode = code;
+	this->status = code;
 	this->updateRawContent();
 }
 
 const std::string& HTTPResponse::getStatusText() const
 {
-	return this->statusText;
+	return this->status.getText();
 }
 
 void HTTPResponse::setStatusText(const std::string& text)
 {
-	this->statusText = text;
+	this->status = text;
 	this->updateRawContent();
 }
 
@@ -115,7 +122,7 @@ void HTTPResponse::updateRawContent()
 {
 	std::ostringstream builder;
 
-	builder << this->version << " " << this->statusCode << " " << this->statusText << std::endl;
+	builder << this->version << " " << this->status << std::endl;
 
 	for(const std::pair<std::string, std::string> header : this->headers)
 	{
