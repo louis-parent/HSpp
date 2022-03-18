@@ -23,11 +23,11 @@ namespace hspp
 		public:
 			KeepAlivePlugin(int timeout = 5, int maxTransaction = 1000);
 
-			bool afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response) override;
+			bool afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response) override;
 		
 		private:
-			bool processHTTP10(const HTTPRequest& request, HTTPResponse& response);
-			bool processHTTP11(const HTTPRequest& request, HTTPResponse& response);
+			bool processHTTP10(HTTPRequest& request, HTTPResponse& response);
+			bool processHTTP11(HTTPRequest& request, HTTPResponse& response);
 			void setConnectionResponseHeader(HTTPResponse& response) const;
 			std::string getKeepAliveResponseHeaderValue() const;
 	};

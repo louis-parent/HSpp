@@ -14,7 +14,7 @@ KeepAlivePlugin::KeepAlivePlugin(int timeout, int maxTransaction) : timeout(time
 {
 }
 
-bool KeepAlivePlugin::afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response)
+bool KeepAlivePlugin::afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response)
 {
 	bool keepAlive = false;
 	
@@ -35,7 +35,7 @@ bool KeepAlivePlugin::afterRequest(const HTTPServlet& servlet, const HTTPRequest
 	return keepAlive;
 }
 
-bool KeepAlivePlugin::processHTTP10(const HTTPRequest& request, HTTPResponse& response)
+bool KeepAlivePlugin::processHTTP10(HTTPRequest& request, HTTPResponse& response)
 {
 	if(request.getHeader(KeepAlivePlugin::CONNECTION_HEADER_NAME) == KeepAlivePlugin::CONNECTION_HEADER_KEEP_ALIVE)
 	{
@@ -47,7 +47,7 @@ bool KeepAlivePlugin::processHTTP10(const HTTPRequest& request, HTTPResponse& re
 	}
 }
 
-bool KeepAlivePlugin::processHTTP11(const HTTPRequest& request, HTTPResponse& response)
+bool KeepAlivePlugin::processHTTP11(HTTPRequest& request, HTTPResponse& response)
 {	
 	if(request.getHeader(KeepAlivePlugin::CONNECTION_HEADER_NAME) == KeepAlivePlugin::CONNECTION_HEADER_CLOSE)
 	{

@@ -1,3 +1,7 @@
 # Binaries
 bin/
 server.run
+
+# Builder temp files
+.fuse_*
+static/

@@ -25,12 +25,12 @@ void Plugin::onDestroy(HTTPServlet& servlet)
 {
 }
 
-bool Plugin::beforeRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response)
+bool Plugin::beforeRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool Plugin::afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response)
+bool Plugin::afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }

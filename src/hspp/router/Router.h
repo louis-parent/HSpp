@@ -13,7 +13,7 @@ namespace hspp
 		private:
 			std::map<const HTTPMethod, std::map<const std::string, RouteAction*>> routes;
 		
-			bool process(const HTTPMethod& method, const HTTPRequest& request, HTTPResponse& response);
+			bool process(const HTTPMethod& method, HTTPRequest& request, HTTPResponse& response);
 			RouteAction* findMatchingRoute(const HTTPMethod& method, const std::string& path);
 		
 		public:
@@ -29,17 +29,20 @@ namespace hspp
 			void options(const std::string& path, RouteAction* action);
 			void trace(const std::string& path, RouteAction* action);
 			void patch(const std::string& path, RouteAction* action);
+		
 			void route(const HTTPMethod& method, const std::string& path, RouteAction* action);
 		
-			bool get(const HTTPRequest& request, HTTPResponse& response) override;
-			bool head(const HTTPRequest& request, HTTPResponse& response) override;
-			bool post(const HTTPRequest& request, HTTPResponse& response) override;
-			bool put(const HTTPRequest& request, HTTPResponse& response) override;
-			bool del(const HTTPRequest& request, HTTPResponse& response) override;
-			bool connect(const HTTPRequest& request, HTTPResponse& response) override;
-			bool options(const HTTPRequest& request, HTTPResponse& response) override;
-			bool trace(const HTTPRequest& request, HTTPResponse& response) override;
-			bool patch(const HTTPRequest& request, HTTPResponse& response) override;
+			void mount(const std::string& routePath, const std::string& mountPath);
+		
+			bool get(HTTPRequest& request, HTTPResponse& response) override;
+			bool head(HTTPRequest& request, HTTPResponse& response) override;
+			bool post(HTTPRequest& request, HTTPResponse& response) override;
+			bool put(HTTPRequest& request, HTTPResponse& response) override;
+			bool del(HTTPRequest& request, HTTPResponse& response) override;
+			bool connect(HTTPRequest& request, HTTPResponse& response) override;
+			bool options(HTTPRequest& request, HTTPResponse& response) override;
+			bool trace(HTTPRequest& request, HTTPResponse& response) override;
+			bool patch(HTTPRequest& request, HTTPResponse& response) override;
 	};
 }
 

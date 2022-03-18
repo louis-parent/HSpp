@@ -24,8 +24,8 @@ namespace hspp
 		
 			virtual void onCreate(HTTPServlet& servlet);
 			virtual void onDestroy(HTTPServlet& servlet);
-			virtual bool beforeRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response);
-			virtual bool afterRequest(const HTTPServlet& servlet, const HTTPRequest& request, HTTPResponse& response);
+			virtual bool beforeRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response);
+			virtual bool afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response);
 		
 			bool operator==(const Plugin& other);
 	};

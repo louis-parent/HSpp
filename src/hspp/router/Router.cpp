@@ -1,10 +1,26 @@
 #include "Router.h"
 
+#ifndef __has_include
+  static_assert(false, "__has_include not supported");
+#else
+#  if __cplusplus >= 201703L && __has_include(<filesystem>)
+#    include <filesystem>
+     namespace fs = std::filesystem;
+#  elif __has_include(<experimental/filesystem>)
+#    include <experimental/filesystem>
+     namespace fs = std::experimental::filesystem;
+#  endif
+#endif
+
+
 #include "exception/RoutingError.h"
+#include "exception/MountingError.h"
+#include "exception/AbsolutePathError.h"
+#include "actions/StaticFileDelivery.h"
 
 using namespace hspp;
 
-bool Router::process(const HTTPMethod& method, const HTTPRequest& request, HTTPResponse& response)
+bool Router::process(const HTTPMethod& method, HTTPRequest& request, HTTPResponse& response)
 {
 	RouteAction* action = this->findMatchingRoute(method, request.getTarget());
 	
@@ -14,7 +30,7 @@ bool Router::process(const HTTPMethod& method, const HTTPRequest& request, HTTPR
 	}
 	else
 	{
-		throw RoutingError("Undefined route " + method.getName() + " " + request.getTarget());
+		return false;
 	}
 }
 
@@ -107,47 +123,80 @@ void Router::route(const HTTPMethod& method, const std::string& path, RouteActio
 	this->routes[method].insert(std::pair<const std::string, RouteAction*>(path, action));
 }
 
-bool Router::get(const HTTPRequest& request, HTTPResponse& response)
+void Router::mount(const std::string& routePath, const std::string& mountPath)
+{
+	if(mountPath[0] != '/')
+	{
+		if(fs::is_regular_file(mountPath))
+		{
+			std::string route(routePath); 
+			if(route[routes.size() - 1] != '/')
+			{
+				route += "/";
+			}
+			route += mountPath;
+		
+			this->route(HTTPMethod::GET, route, new StaticFileDelivery(mountPath));
+		}
+		else if(fs::is_directory(mountPath))
+		{
+			for(const fs::directory_entry& entry : fs::directory_iterator(mountPath))
+			{
+				this->mount(routePath, entry.path());
+			}
+		}
+		else
+		{
+			throw MountingError(mountPath);
+		}
+	}
+	else
+	{
+		throw AbsolutePathError(mountPath);
+	}
+}
+
+bool Router::get(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::GET, request, response);
 }
 
-bool Router::head(const HTTPRequest& request, HTTPResponse& response)
+bool Router::head(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::HEAD, request, response);
 }
 
-bool Router::post(const HTTPRequest& request, HTTPResponse& response)
+bool Router::post(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::POST, request, response);
 }
 
-bool Router::put(const HTTPRequest& request, HTTPResponse& response)
+bool Router::put(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::PUT, request, response);
 }
 
-bool Router::del(const HTTPRequest& request, HTTPResponse& response)
+bool Router::del(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::DELETE, request, response);
 }
 
-bool Router::connect(const HTTPRequest& request, HTTPResponse& response)
+bool Router::connect(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::CONNECT, request, response);
 }
 
-bool Router::options(const HTTPRequest& request, HTTPResponse& response)
+bool Router::options(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::OPTIONS, request, response);
 }
 
-bool Router::trace(const HTTPRequest& request, HTTPResponse& response)
+bool Router::trace(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::TRACE, request, response);
 }
 
-bool Router::patch(const HTTPRequest& request, HTTPResponse& response)
+bool Router::patch(HTTPRequest& request, HTTPResponse& response)
 {
 	return this->process(HTTPMethod::PATCH, request, response);
 }

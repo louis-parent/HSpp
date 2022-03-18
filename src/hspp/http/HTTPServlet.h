@@ -46,17 +46,17 @@ namespace hspp
 			virtual void onDestroy() override;
 		
 			bool request(const Request& request, Response& response) override;
-			virtual bool request(const HTTPRequest& request, HTTPResponse& response);
+			virtual bool request(HTTPRequest& request, HTTPResponse& response);
 		
-			virtual bool get(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool head(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool post(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool put(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool del(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool connect(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool options(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool trace(const HTTPRequest& request, HTTPResponse& response);
-			virtual bool patch(const HTTPRequest& request, HTTPResponse& response);
+			virtual bool get(HTTPRequest& request, HTTPResponse& response);
+			virtual bool head(HTTPRequest& request, HTTPResponse& response);
+			virtual bool post(HTTPRequest& request, HTTPResponse& response);
+			virtual bool put(HTTPRequest& request, HTTPResponse& response);
+			virtual bool del(HTTPRequest& request, HTTPResponse& response);
+			virtual bool connect(HTTPRequest& request, HTTPResponse& response);
+			virtual bool options(HTTPRequest& request, HTTPResponse& response);
+			virtual bool trace(HTTPRequest& request, HTTPResponse& response);
+			virtual bool patch(HTTPRequest& request, HTTPResponse& response);
 	};
 }
 

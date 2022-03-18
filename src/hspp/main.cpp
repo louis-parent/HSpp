@@ -21,6 +21,7 @@ int main(int argc, char* argv[])
 	
 	std::cout << "Creation of routes..." << std::endl;
 	router.get("/", new RequestPrinterAction());
+	router.mount("/", "static");
 	
 	std::cout << "Server Starting..." << std::endl;
 	std::thread t = router.start();

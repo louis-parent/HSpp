@@ -112,7 +112,7 @@ bool HTTPServlet::request(const Request& request, Response& response)
 	return keepAlive;
 }
 
-bool HTTPServlet::request(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::request(HTTPRequest& request, HTTPResponse& response)
 {
 	if(request.getMethod() == HTTPMethod::GET)
 	{
@@ -156,47 +156,47 @@ bool HTTPServlet::request(const HTTPRequest& request, HTTPResponse& response)
 	}
 }
 
-bool HTTPServlet::get(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::get(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::head(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::head(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::post(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::post(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::put(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::put(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::del(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::del(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::connect(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::connect(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::options(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::options(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::trace(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::trace(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }
 
-bool HTTPServlet::patch(const HTTPRequest& request, HTTPResponse& response)
+bool HTTPServlet::patch(HTTPRequest& request, HTTPResponse& response)
 {
 	return false;
 }

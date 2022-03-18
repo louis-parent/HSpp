@@ -1,5 +1,5 @@
-COMPILER_OPTIONS=-Wall -ansi -pedantic -std=c++11
-LINKER_OPTIONS=-lpthread
+COMPILER_OPTIONS=-Wall -ansi -pedantic -std=c++17
+LINKER_OPTIONS=-lpthread -lstdc++fs
 
 COMPILER=g++
 TARGET=server.run

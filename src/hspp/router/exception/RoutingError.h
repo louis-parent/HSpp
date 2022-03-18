@@ -8,7 +8,7 @@ namespace hspp
 	class RoutingError : public std::runtime_error
 	{
 		public:
-			RoutingError(const std::string& reason) : runtime_error(reason)
+			RoutingError(const HTTPMethod& method, const std::string& target) : runtime_error("Undefined route " + method.getName() + " " + target)
 			{}
 	};
 }

@@ -22,29 +22,14 @@ const HTTPMethod& HTTPRequest::getMethod() const
 	return this->method;
 }
 
-void HTTPRequest::setMethod(const HTTPMethod& method)
-{
-	this->method = method;
-}
-
 const std::string& HTTPRequest::getTarget() const
 {
 	return this->target;
 }
 
-void HTTPRequest::setTarget(const std::string& target)
-{
-	this->target = target;
-}
-
 const std::string& HTTPRequest::getVersion() const
 {
 	return this->version;
-}
-
-void HTTPRequest::setVersion(const std::string& version)
-{
-	this->version = version;
 }
 
 const std::map<std::string, std::string>& HTTPRequest::getHeaders() const
@@ -64,29 +49,44 @@ const std::string& HTTPRequest::getHeader(const std::string& key) const
 	}
 }
 
-void HTTPRequest::setHeader(const std::string& key, const std::string& value)
-{
-	this->headers[key] = value;
-}
-
 const std::string& HTTPRequest::getBody() const
 {
 	return this->body;
 }
 
+void* HTTPRequest::getAdditional(const std::string& key) const
+{
+	return this->additionals.at(key);
+}
+
+void HTTPRequest::setAdditional(const std::string& key, void* data)
+{
+	this->additionals[key] = data;
+}
+
+void HTTPRequest::setMethod(const HTTPMethod& method)
+{
+	this->method = method;
+}
+
+void HTTPRequest::setTarget(const std::string& target)
+{
+	this->target = target;
+}
+
+void HTTPRequest::setVersion(const std::string& version)
+{
+	this->version = version;
+}
+
+void HTTPRequest::setHeader(const std::string& key, const std::string& value)
+{
+	this->headers[key] = value;
+}
+
 void HTTPRequest::setBody(const std::string& body)
 {
 	this->body = body;
-}
-
-void* HTTPRequest::getCustom(const std::string& key) const
-{
-	return this->customs.at(key);
-}
-
-void HTTPRequest::setCustom(const std::string& key, void* data)
-{
-	this->customs[key] = data;
 }
 
 void HTTPRequest::parseRequest()

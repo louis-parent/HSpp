@@ -22,30 +22,30 @@ namespace hspp
 			std::map<std::string, std::string> headers;
 			std::string body;
 		
-			std::map<const std::string, void*> customs;
+			std::map<const std::string, void*> additionals;
 
 		public:
 			HTTPRequest(const Request& request);
 
 			const HTTPMethod& getMethod() const;
-			void setMethod(const HTTPMethod& method);
-		
 			const std::string& getTarget() const;
-			void setTarget(const std::string& target);
-		
 			const std::string& getVersion() const;
-			void setVersion(const std::string& version);
 		
 			const std::map<std::string, std::string>& getHeaders() const;
 			const std::string& getHeader(const std::string& key) const;
-			void setHeader(const std::string& key, const std::string& value);
 		
 			const std::string& getBody() const;
+			
+			void* getAdditional(const std::string& key) const;
+			void setAdditional(const std::string& key, void* data);
+		
+		protected:
+			void setMethod(const HTTPMethod& method);
+			void setTarget(const std::string& target);
+			void setVersion(const std::string& version);
+			void setHeader(const std::string& key, const std::string& value);
 			void setBody(const std::string& body);
 			
-			void* getCustom(const std::string& key) const;
-			void setCustom(const std::string& key, void* data);
-
 		private:
 			void parseRequest();
 			void parseRequestLine(const std::string& line);
