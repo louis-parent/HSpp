@@ -17,7 +17,6 @@ namespace hspp
 			RouteAction* findMatchingRoute(const HTTPMethod& method, const std::string& path);
 			
 			std::string tryToGetMountPath(const std::string& mountPath);
-			std::string& slashPrefixed(std::string& str);
 		
 		public:
 			Router(Port port, int queueLength = 256);
@@ -34,6 +33,7 @@ namespace hspp
 			void patch(const std::string& path, RouteAction* action);
 		
 			void route(const HTTPMethod& method, const std::string& path, RouteAction* action);
+			void prefixed(const std::string& prefix, const std::map<std::pair<const HTTPMethod, const std::string>, RouteAction*> routes);
 		
 			void mount(const std::string& routePath, const std::string& mountPath);
 		

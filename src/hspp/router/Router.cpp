@@ -18,6 +18,7 @@
 #include "exception/MountingError.h"
 #include "exception/MountPathError.h"
 #include "actions/StaticFileDelivery.h"
+#include "../utils/Utils.h"
 
 using namespace hspp;
 
@@ -79,16 +80,6 @@ std::string Router::tryToGetMountPath(const std::string& mountPath)
 	{
 		throw MountPathError(mountPath, "the target doesn't exist");
 	}
-}
-
-std::string& Router::slashPrefixed(std::string& str)
-{
-	if(str[0] != '/')
-	{
-		str = "/" + str;
-	}
-	
-	return str;
 }
 
 Router::Router(Port port, int queueLength) : HTTPServlet(port, queueLength)
@@ -158,7 +149,19 @@ void Router::route(const HTTPMethod& method, const std::string& path, RouteActio
 		this->routes.insert(std::pair<const HTTPMethod, std::map<const std::string, RouteAction*>>(method, std::map<const std::string, RouteAction*>()));
 	}
 	
-	this->routes[method].insert(std::pair<const std::string, RouteAction*>(path, action));
+	this->routes[method].insert(std::pair<const std::string, RouteAction*>(Utils::slashPrefixed(path), action));
+}
+
+void Router::prefixed(const std::string& prefix, const std::map<std::pair<const HTTPMethod, const std::string>, RouteAction*> routes)
+{
+	for(const std::pair<std::pair<const HTTPMethod, const std::string>, RouteAction*>& route : routes)
+	{
+		const HTTPMethod& method = route.first.first;
+		const std::string& path = route.first.second;
+		RouteAction* action = route.second;
+		
+		this->route(method, prefix + Utils::slashPrefixed(path), action);
+	}
 }
 
 void Router::mount(const std::string& routePath, const std::string& mountPath)
@@ -169,7 +172,7 @@ void Router::mount(const std::string& routePath, const std::string& mountPath)
 	if(fs::is_regular_file(path))
 	{
 		std::string route(path.substr(currentPath.size())); // Making path relative to the current path
-		this->route(HTTPMethod::GET, this->slashPrefixed(route), new StaticFileDelivery(path));
+		this->route(HTTPMethod::GET, Utils::slashPrefixed(route), new StaticFileDelivery(path));
 	}
 	else if(fs::is_directory(path))
 	{
