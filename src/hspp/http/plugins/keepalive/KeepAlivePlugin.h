@@ -2,8 +2,8 @@
 #define __KEEP_ALIVE_PLUGIN_H__
 
 #include <string>
-#include "../plugin/Plugin.h"
-#include "../HTTPServlet.h"
+#include "../../plugin/Plugin.h"
+#include "../../HTTPServlet.h"
 
 namespace hspp
 {

@@ -31,6 +31,8 @@ namespace hspp
 
 			static const Port HTTP_PORT_PROD;
 			static const Port HTTP_PORT_DEV;
+		
+			static const std::vector<Plugin*> DEFAULT_PLUGINS;
 			
 			HTTPServlet(Port port, int queueLength = 256);
 			HTTPServlet(Port port, const std::vector<Plugin*>& plugins, int queueLength = 256);

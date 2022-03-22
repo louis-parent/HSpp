@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "method/HTTPMethod.h"
 #include "exception/InvalidVersionError.h"
+#include "plugins/timestamp/TimestampPlugin.h"
 
 using namespace hspp;
 
@@ -19,7 +20,11 @@ const std::string HTTPServlet::HTTP_VERSION_2_0 = "HTTP/2.0";
 const Port HTTPServlet::HTTP_PORT_PROD = 80;
 const Port HTTPServlet::HTTP_PORT_DEV = 8080;
 
-HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, std::vector<Plugin*>(), queueLength)
+const std::vector<Plugin*> HTTPServlet::DEFAULT_PLUGINS = {
+	new TimestampPlugin()
+};
+
+HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, HTTPServlet::DEFAULT_PLUGINS, queueLength)
 {
 }
 
