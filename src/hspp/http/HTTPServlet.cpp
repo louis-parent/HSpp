@@ -4,6 +4,7 @@
 #include "method/HTTPMethod.h"
 #include "exception/InvalidVersionError.h"
 #include "plugins/timestamp/TimestampPlugin.h"
+#include "plugins/servername/ServerNamePlugin.h"
 
 using namespace hspp;
 
@@ -21,7 +22,8 @@ const Port HTTPServlet::HTTP_PORT_PROD = 80;
 const Port HTTPServlet::HTTP_PORT_DEV = 8080;
 
 const std::vector<Plugin*> HTTPServlet::DEFAULT_PLUGINS = {
-	new TimestampPlugin()
+	new TimestampPlugin(),
+	new ServerNamePlugin()
 };
 
 HTTPServlet::HTTPServlet(Port port, int queueLength) : HTTPServlet(port, HTTPServlet::DEFAULT_PLUGINS, queueLength)
