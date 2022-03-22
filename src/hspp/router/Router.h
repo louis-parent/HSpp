@@ -15,6 +15,9 @@ namespace hspp
 		
 			bool process(const HTTPMethod& method, HTTPRequest& request, HTTPResponse& response);
 			RouteAction* findMatchingRoute(const HTTPMethod& method, const std::string& path);
+			
+			std::string tryToGetMountPath(const std::string& mountPath);
+			std::string& slashPrefixed(std::string& str);
 		
 		public:
 			Router(Port port, int queueLength = 256);

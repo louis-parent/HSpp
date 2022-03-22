@@ -12,10 +12,11 @@
 #  endif
 #endif
 
+#include <stdlib.h>
 
 #include "exception/RoutingError.h"
 #include "exception/MountingError.h"
-#include "exception/AbsolutePathError.h"
+#include "exception/MountPathError.h"
 #include "actions/StaticFileDelivery.h"
 
 using namespace hspp;
@@ -51,6 +52,43 @@ RouteAction* Router::findMatchingRoute(const HTTPMethod& method, const std::stri
 	{
 		return nullptr;
 	}
+}
+
+std::string Router::tryToGetMountPath(const std::string& mountPath)
+{
+	char* rawPath = realpath(mountPath.c_str(), nullptr); 
+	
+	if(rawPath != nullptr)
+	{
+		std::string path(rawPath);
+		std::string currentPath(fs::current_path().string() + "/");
+		
+		delete rawPath;
+		
+		// To be a subfolder : must start with the current path add be bigger
+		if(path.rfind(currentPath, 0) == 0 && path.size() > currentPath.size())
+		{
+			return path;
+		}
+		else
+		{
+			throw MountPathError(mountPath, "mount path must be a subfolder / subfile of the server");
+		}
+	}
+	else
+	{
+		throw MountPathError(mountPath, "the target doesn't exist");
+	}
+}
+
+std::string& Router::slashPrefixed(std::string& str)
+{
+	if(str[0] != '/')
+	{
+		str = "/" + str;
+	}
+	
+	return str;
 }
 
 Router::Router(Port port, int queueLength) : HTTPServlet(port, queueLength)
@@ -125,34 +163,24 @@ void Router::route(const HTTPMethod& method, const std::string& path, RouteActio
 
 void Router::mount(const std::string& routePath, const std::string& mountPath)
 {
-	if(mountPath[0] != '/')
+	std::string path(this->tryToGetMountPath(mountPath));
+	std::string currentPath(fs::current_path().string());
+
+	if(fs::is_regular_file(path))
 	{
-		if(fs::is_regular_file(mountPath))
+		std::string route(path.substr(currentPath.size())); // Making path relative to the current path
+		this->route(HTTPMethod::GET, this->slashPrefixed(route), new StaticFileDelivery(path));
+	}
+	else if(fs::is_directory(path))
+	{
+		for(const fs::directory_entry& entry : fs::directory_iterator(path))
 		{
-			std::string route(routePath); 
-			if(route[routes.size() - 1] != '/')
-			{
-				route += "/";
-			}
-			route += mountPath;
-		
-			this->route(HTTPMethod::GET, route, new StaticFileDelivery(mountPath));
-		}
-		else if(fs::is_directory(mountPath))
-		{
-			for(const fs::directory_entry& entry : fs::directory_iterator(mountPath))
-			{
-				this->mount(routePath, entry.path());
-			}
-		}
-		else
-		{
-			throw MountingError(mountPath);
+			this->mount(routePath, entry.path());
 		}
 	}
 	else
 	{
-		throw AbsolutePathError(mountPath);
+		throw MountingError(mountPath);
 	}
 }
 
