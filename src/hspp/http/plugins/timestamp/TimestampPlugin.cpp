@@ -114,7 +114,7 @@ std::string TimestampPlugin::getMonthName(int month) const
 	}
 }
 
-bool TimestampPlugin::afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response)
+bool TimestampPlugin::beforeRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response)
 {
 	time_t rawtime;
 	time(&rawtime);

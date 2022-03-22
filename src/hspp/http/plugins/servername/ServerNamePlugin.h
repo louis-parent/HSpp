@@ -17,7 +17,7 @@ namespace hspp
 			ServerNamePlugin();
 			ServerNamePlugin(const std::string& name);
 
-			bool afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response) override;
+			bool beforeRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response) override;
 	};
 }
 

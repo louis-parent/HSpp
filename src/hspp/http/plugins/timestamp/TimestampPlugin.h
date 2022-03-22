@@ -16,7 +16,7 @@ namespace hspp
 			std::string getMonthName(int month) const;
 		
 		public:
-			bool afterRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response) override;
+			bool beforeRequest(const HTTPServlet& servlet, HTTPRequest& request, HTTPResponse& response) override;
 	};
 }
 
