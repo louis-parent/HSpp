@@ -1,4 +1,4 @@
-COMPILER_OPTIONS=-Wall -ansi -pedantic -std=c++17
+COMPILER_OPTIONS=-Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2 -Wimplicit-fallthrough -Weverything -Weffc++ -ansi -pedantic -std=c++17
 LINKER_OPTIONS=-lpthread -lstdc++fs
 
 COMPILER=g++
